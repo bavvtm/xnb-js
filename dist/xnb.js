@@ -1,5 +1,5 @@
 /** 
- * xnb.js 1.2.1
+ * xnb.js 1.3.5
  * made by Lybell( https://github.com/lybell-art/ )
  * This library is based on the XnbCli made by Leonblade.
  * 
@@ -30,39 +30,48 @@
 		return Promise.all(mappedPromises);
 	};
 
-	function ownKeys(object, enumerableOnly) {
-		var keys = Object.keys(object);
+	function _defineProperty(e, r, t) {
+		return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
+			value: t,
+			enumerable: !0,
+			configurable: !0,
+			writable: !0
+		}) : e[r] = t, e;
+	}
+	function ownKeys(e, r) {
+		var t = Object.keys(e);
 		if (Object.getOwnPropertySymbols) {
-			var symbols = Object.getOwnPropertySymbols(object);
-			enumerableOnly && (symbols = symbols.filter(function (sym) {
-				return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-			})), keys.push.apply(keys, symbols);
+			var o = Object.getOwnPropertySymbols(e);
+			r && (o = o.filter(function (r) {
+				return Object.getOwnPropertyDescriptor(e, r).enumerable;
+			})), t.push.apply(t, o);
 		}
-		return keys;
+		return t;
 	}
-	function _objectSpread2(target) {
-		for (var i = 1; i < arguments.length; i++) {
-			var source = null != arguments[i] ? arguments[i] : {};
-			i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
-				_defineProperty(target, key, source[key]);
-			}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
-				Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+	function _objectSpread2(e) {
+		for (var r = 1; r < arguments.length; r++) {
+			var t = null != arguments[r] ? arguments[r] : {};
+			r % 2 ? ownKeys(Object(t), !0).forEach(function (r) {
+				_defineProperty(e, r, t[r]);
+			}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
+				Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
 			});
 		}
-		return target;
+		return e;
 	}
-	function _defineProperty(obj, key, value) {
-		if (key in obj) {
-			Object.defineProperty(obj, key, {
-				value: value,
-				enumerable: true,
-				configurable: true,
-				writable: true
-			});
-		} else {
-			obj[key] = value;
+	function _toPrimitive(t, r) {
+		if ("object" != typeof t || !t) return t;
+		var e = t[Symbol.toPrimitive];
+		if (void 0 !== e) {
+			var i = e.call(t, r || "default");
+			if ("object" != typeof i) return i;
+			throw new TypeError("@@toPrimitive must return a primitive value.");
 		}
-		return obj;
+		return ("string" === r ? String : Number)(t);
+	}
+	function _toPropertyKey(t) {
+		var i = _toPrimitive(t, "string");
+		return "symbol" == typeof i ? i : i + "";
 	}
 
 	class XnbError extends Error {
@@ -209,7 +218,6 @@
 		}
 		static getReaderTypeList(typeString) {
 			let reader = TypeReader.getReader(typeString);
-			console.log(reader);
 			return reader.parseTypeList();
 		}
 		static getReader(typeString) {
@@ -282,8 +290,8 @@
 	const UTF8_FIRST_BITES = [0xC0, 0xE0, 0xF0];
 	const UTF8_SECOND_BITES = 0x80;
 	const UTF8_MASK = 0b111111;
-	const UTF16_BITES$2 = [0xD800, 0xDC00];
-	const UTF16_MASK$2 = 0b1111111111;
+	const UTF16_BITES$1 = [0xD800, 0xDC00];
+	const UTF16_MASK$1 = 0b1111111111;
 	function UTF8Encode(code) {
 		if (code < 0x80) return [code];
 		if (code < 0x800) return [UTF8_FIRST_BITES[0] | code >> 6, UTF8_SECOND_BITES | code & UTF8_MASK];
@@ -293,7 +301,7 @@
 	function UTF16Encode(code) {
 		if (code < 0xFFFF) return [code];
 		code -= 0x10000;
-		return [UTF16_BITES$2[0] | code >> 10 & UTF16_MASK$2, UTF16_BITES$2[1] | code & UTF16_MASK$2];
+		return [UTF16_BITES$1[0] | code >> 10 & UTF16_MASK$1, UTF16_BITES$1[1] | code & UTF16_MASK$1];
 	}
 	function UTF8Decode(codeSet) {
 		var _codeSet;
@@ -307,15 +315,15 @@
 		}
 		return ((codeSet[0] ^ UTF8_FIRST_BITES[2]) << 18) + ((codeSet[1] ^ UTF8_SECOND_BITES) << 12) + ((codeSet[2] ^ UTF8_SECOND_BITES) << 6) + (codeSet[3] ^ UTF8_SECOND_BITES);
 	}
-	function UTF16Decode$2(codeSet) {
+	function UTF16Decode$1(codeSet) {
 		var _codeSet2;
 		if (typeof codeSet === "number") codeSet = [codeSet];
 		if (!((_codeSet2 = codeSet) !== null && _codeSet2 !== void 0 && _codeSet2.length)) throw new Error("Invalid codeset!");
 		const codeSetRange = codeSet.length;
 		if (codeSetRange === 1) return codeSet[0];
-		return ((codeSet[0] & UTF16_MASK$2) << 10) + (codeSet[1] & UTF16_MASK$2) + 0x10000;
+		return ((codeSet[0] & UTF16_MASK$1) << 10) + (codeSet[1] & UTF16_MASK$1) + 0x10000;
 	}
-	function stringToUnicode$2(str) {
+	function stringToUnicode$1(str) {
 		const utf16Map = Array.from({
 			length: str.length
 		}, (_, i) => str.charCodeAt(i));
@@ -323,11 +331,11 @@
 		let index = 0;
 		while (index < str.length) {
 			let code = utf16Map[index];
-			if ((UTF16_BITES$2[0] & code) !== UTF16_BITES$2[0]) {
+			if ((UTF16_BITES$1[0] & code) !== UTF16_BITES$1[0]) {
 				result.push(code);
 				index++;
 			} else {
-				result.push(UTF16Decode$2(utf16Map.slice(index, index + 2)));
+				result.push(UTF16Decode$1(utf16Map.slice(index, index + 2)));
 				index += 2;
 			}
 		}
@@ -375,10 +383,19 @@
 		return resultStr;
 	}
 	function stringToUTF8(str) {
-		return UnicodeToUTF8(stringToUnicode$2(str));
+		return UnicodeToUTF8(stringToUnicode$1(str));
 	}
 	function UTF8ToString(utf8Array) {
 		return UnicodeToString(UTF8ToUnicode(utf8Array));
+	}
+	function UTF8Length$1(str) {
+		const codes = stringToUnicode$1(str);
+		return codes.reduce((sum, unicode) => {
+			if (unicode < 0x80) return sum + 1;
+			if (unicode < 0x800) return sum + 2;
+			if (unicode < 0x10000) return sum + 3;
+			return sum + 4;
+		}, 0);
 	}
 
 	const LITTLE_ENDIAN = true;
@@ -486,7 +503,7 @@
 			return value;
 		}
 		readDouble() {
-			const value = this._dataView.getFloat32(this._offset, this._endianus);
+			const value = this._dataView.getFloat64(this._offset, this._endianus);
 			this.seek(8);
 			return value;
 		}
@@ -1314,44 +1331,6 @@
 	function compressSingleBlock(src, dst) {
 		clearHashTable();
 		return compressBlock(src, dst, 0, src.length, hashTable);
-	}
-
-	const UTF16_BITES$1 = [0xD800, 0xDC00];
-	const UTF16_MASK$1 = 0b1111111111;
-	function UTF16Decode$1(codeSet) {
-		var _codeSet2;
-		if (typeof codeSet === "number") codeSet = [codeSet];
-		if (!((_codeSet2 = codeSet) !== null && _codeSet2 !== void 0 && _codeSet2.length)) throw new Error("Invalid codeset!");
-		const codeSetRange = codeSet.length;
-		if (codeSetRange === 1) return codeSet[0];
-		return ((codeSet[0] & UTF16_MASK$1) << 10) + (codeSet[1] & UTF16_MASK$1) + 0x10000;
-	}
-	function stringToUnicode$1(str) {
-		const utf16Map = Array.from({
-			length: str.length
-		}, (_, i) => str.charCodeAt(i));
-		const result = [];
-		let index = 0;
-		while (index < str.length) {
-			let code = utf16Map[index];
-			if ((UTF16_BITES$1[0] & code) !== UTF16_BITES$1[0]) {
-				result.push(code);
-				index++;
-			} else {
-				result.push(UTF16Decode$1(utf16Map.slice(index, index + 2)));
-				index += 2;
-			}
-		}
-		return result;
-	}
-	function UTF8Length$1(str) {
-		const codes = stringToUnicode$1(str);
-		return codes.reduce((sum, unicode) => {
-			if (unicode < 0x80) return sum + 1;
-			if (unicode < 0x800) return sum + 2;
-			if (unicode < 0x10000) return sum + 3;
-			return sum + 4;
-		}, 0);
 	}
 
 	class StringReaderCore {

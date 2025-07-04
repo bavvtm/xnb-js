@@ -4,7 +4,7 @@
 	"description": "The basic readers of xnb.js.",
 	"main": "./dist/readers.js",
 	"module": "./dist/readers.module.js",
-	"export": {
+	"exports": {
 		".": {
 			"import": "./dist/readers.module.js",
 			"require": "./dist/readers.cjs"

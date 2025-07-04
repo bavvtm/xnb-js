@@ -4,7 +4,7 @@
   "description": "The core of xnb.js.",
   "main": "./dist/core.js",
   "module": "./dist/core.module.js",
-  "export": {
+  "exports": {
     ".": {
       "import": "./dist/core.module.js",
       "require": "./dist/core.cjs"

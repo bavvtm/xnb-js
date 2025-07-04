@@ -1,5 +1,5 @@
 /** 
- * xnb.js 1.3.0
+ * xnb.js 1.3.5
  * made by Lybell( https://github.com/lybell-art/ )
  * This library is based on the XnbCli made by Leonblade.
  * 
@@ -588,39 +588,48 @@
 	const kColourMetricUniform = 1 << 6;
 	const kWeightColourByAlpha = 1 << 7;
 
-	function ownKeys(object, enumerableOnly) {
-		var keys = Object.keys(object);
+	function _defineProperty(e, r, t) {
+		return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
+			value: t,
+			enumerable: !0,
+			configurable: !0,
+			writable: !0
+		}) : e[r] = t, e;
+	}
+	function ownKeys(e, r) {
+		var t = Object.keys(e);
 		if (Object.getOwnPropertySymbols) {
-			var symbols = Object.getOwnPropertySymbols(object);
-			enumerableOnly && (symbols = symbols.filter(function (sym) {
-				return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-			})), keys.push.apply(keys, symbols);
+			var o = Object.getOwnPropertySymbols(e);
+			r && (o = o.filter(function (r) {
+				return Object.getOwnPropertyDescriptor(e, r).enumerable;
+			})), t.push.apply(t, o);
 		}
-		return keys;
+		return t;
 	}
-	function _objectSpread2(target) {
-		for (var i = 1; i < arguments.length; i++) {
-			var source = null != arguments[i] ? arguments[i] : {};
-			i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
-				_defineProperty(target, key, source[key]);
-			}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
-				Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+	function _objectSpread2(e) {
+		for (var r = 1; r < arguments.length; r++) {
+			var t = null != arguments[r] ? arguments[r] : {};
+			r % 2 ? ownKeys(Object(t), !0).forEach(function (r) {
+				_defineProperty(e, r, t[r]);
+			}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
+				Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
 			});
 		}
-		return target;
+		return e;
 	}
-	function _defineProperty(obj, key, value) {
-		if (key in obj) {
-			Object.defineProperty(obj, key, {
-				value: value,
-				enumerable: true,
-				configurable: true,
-				writable: true
-			});
-		} else {
-			obj[key] = value;
+	function _toPrimitive(t, r) {
+		if ("object" != typeof t || !t) return t;
+		var e = t[Symbol.toPrimitive];
+		if (void 0 !== e) {
+			var i = e.call(t, r || "default");
+			if ("object" != typeof i) return i;
+			throw new TypeError("@@toPrimitive must return a primitive value.");
 		}
-		return obj;
+		return ("string" === r ? String : Number)(t);
+	}
+	function _toPropertyKey(t) {
+		var i = _toPrimitive(t, "string");
+		return "symbol" == typeof i ? i : i + "";
 	}
 
 	function Rot(theta) {
